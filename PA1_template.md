@@ -4,7 +4,7 @@
 ## Loading and preprocessing the data
 
 ### loading the data
-Here we decide to load the dataset directly from the source url where the file is store in the web. This strategy ensure that there is no manual manipulation of the data source. 
+Here we decide to load the dataset directly from the source url where the file is stored in the web. This strategy ensure that there is no manual manipulation of the data source. 
 
 ```r
 temp <- tempfile()

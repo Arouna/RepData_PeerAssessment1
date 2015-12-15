@@ -68,7 +68,7 @@ img {
 <h2>Loading and preprocessing the data</h2>
 <div id="loading-the-data" class="section level3">
 <h3>loading the data</h3>
-<p>Here we decide to load the dataset directly from the source url where the file is store in the web. This strategy ensure that there is no manual manipulation of the data source.</p>
+<p>Here we decide to load the dataset directly from the source url where the file is stored in the web. This strategy ensure that there is no manual manipulation of the data source.</p>
 <pre class="r"><code>temp &lt;- tempfile()
 download.file(&quot;https://d396qusza40orc.cloudfront.net/repdata/data/activity.zip&quot;,temp)
 data &lt;- read.csv(unz(temp, &quot;activity.csv&quot;))
