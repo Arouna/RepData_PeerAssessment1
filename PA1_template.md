@@ -4,7 +4,7 @@
 ## Loading and preprocessing the data
 
 ### loading the data
-
+Here we decide to load the dataset directly from the source url where the file is store in the web. This strategy ensure that there is no manual manipulation of the data source. 
 
 ```r
 temp <- tempfile()
@@ -108,17 +108,17 @@ sqldf("select interval, max(steps) steps from mydf2")
  nbna <- sum(!complete.cases(data))
 ```
 
-2. & 3 - Strategy for filling in all of the missing values in the dataset
+2. Strategy for filling in all of the missing values in the dataset
 
-Here we answer at the same time to the second and the third questions. Here is our strategy:
+Here we answer at the same time to the  questions 2 and 3. 
 
- We choose to fill na's with the mean for that 5-minute interval. For each 5-minute interval, we compute the mean without missing values in all the dataset. The value obtained is use to fill missing values in the same 5-minute interval. 
+Here is our strategy: We choose to fill na's with the mean for that 5-minute interval. For each 5-minute interval, we compute the mean without missing values in all the dataset. The value obtained is use to fill missing values in the same 5-minute interval. 
 
 ```r
 mydf3 <- mydf %>% group_by(interval) %>% mutate(filled_steps=mean(steps,na.rm=TRUE)) %>% transform(steps = ifelse(is.na(steps), filled_steps, steps)) %>% select(steps,date,interval)
 ```
 
-4 -  Make a histogram of the total number of steps taken each day
+4.  Make a histogram of the total number of steps taken each day
 We generate a data frame ** stepbydate ** with to variables *steps* and *date*. each observations consist of a date and the corresponding total number of steps.
 
 ```r
@@ -151,13 +151,13 @@ summarize(stepbydate, mean_steps=mean(steps,na.rm=TRUE), median_steps=median(ste
  The median and the mean are moving to the right
 
 ## Are there differences in activity patterns between weekdays and weekends?
-1 - Creating a new factor variable in the dataset consisting of two factors: *"weekend","weekday"*
+1. Creating a new factor variable in the dataset consisting of two factors: *"weekend","weekday"*
 
 ```r
  mydf4 <- mydf3 %>% mutate(dayname=weekdays(date)) %>% mutate(isweekday=ifelse(dayname=="samedi"|dayname=="dimanche","weekend","weekday")) %>% select(steps,date,interval,isweekday)
 ```
 
-2 - Panel plot of time series plot of the 5-minute interval  and the average number of steps
+2. Panel plot of time series plot of the 5-minute interval  and the average number of steps
 We first generate a new data frame **mydf5** with three variables: *steps* (mean of steps by interval), *interval* and *isweekday*
 
 ```r

@@ -68,6 +68,7 @@ img {
 <h2>Loading and preprocessing the data</h2>
 <div id="loading-the-data" class="section level3">
 <h3>loading the data</h3>
+<p>Here we decide to load the dataset directly from the source url where the file is store in the web. This strategy ensure that there is no manual manipulation of the data source.</p>
 <pre class="r"><code>temp &lt;- tempfile()
 download.file(&quot;https://d396qusza40orc.cloudfront.net/repdata/data/activity.zip&quot;,temp)
 data &lt;- read.csv(unz(temp, &quot;activity.csv&quot;))
@@ -129,12 +130,14 @@ unlink(temp)</code></pre>
 </ol>
 <pre class="r"><code> nbna &lt;- sum(!complete.cases(data))</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>&amp; 3 - Strategy for filling in all of the missing values in the dataset</li>
+<li>Strategy for filling in all of the missing values in the dataset</li>
 </ol>
-<p>Here we answer at the same time to the second and the third questions. Here is our strategy:</p>
-<p>We choose to fill na’s with the mean for that 5-minute interval. For each 5-minute interval, we compute the mean without missing values in all the dataset. The value obtained is use to fill missing values in the same 5-minute interval.</p>
+<p>Here we answer at the same time to the questions 2 and 3.</p>
+<p>Here is our strategy: We choose to fill na’s with the mean for that 5-minute interval. For each 5-minute interval, we compute the mean without missing values in all the dataset. The value obtained is use to fill missing values in the same 5-minute interval.</p>
 <pre class="r"><code>mydf3 &lt;- mydf %&gt;% group_by(interval) %&gt;% mutate(filled_steps=mean(steps,na.rm=TRUE)) %&gt;% transform(steps = ifelse(is.na(steps), filled_steps, steps)) %&gt;% select(steps,date,interval)</code></pre>
-<p>4 - Make a histogram of the total number of steps taken each day We generate a data frame ** stepbydate ** with to variables <em>steps</em> and <em>date</em>. each observations consist of a date and the corresponding total number of steps.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Make a histogram of the total number of steps taken each day We generate a data frame ** stepbydate ** with to variables <em>steps</em> and <em>date</em>. each observations consist of a date and the corresponding total number of steps.</li>
+</ol>
 <pre class="r"><code> stepbydate &lt;- mydf3 %&gt;%group_by(date) %&gt;% summarize(steps=sum(steps,na.rm=TRUE)) </code></pre>
 <p>Making the histogram of the total number of steps taken each day.</p>
 <pre class="r"><code> hist(stepbydate$steps, main = &quot;Total number of steps taken each day&quot;, xlab='Number of steps', ylab=&quot;Frequency&quot;,col=&quot;green&quot;, breaks = 20)</code></pre>
@@ -150,9 +153,13 @@ unlink(temp)</code></pre>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
-<p>1 - Creating a new factor variable in the dataset consisting of two factors: <em>“weekend”,“weekday”</em></p>
+<ol style="list-style-type: decimal">
+<li>Creating a new factor variable in the dataset consisting of two factors: <em>“weekend”,“weekday”</em></li>
+</ol>
 <pre class="r"><code> mydf4 &lt;- mydf3 %&gt;% mutate(dayname=weekdays(date)) %&gt;% mutate(isweekday=ifelse(dayname==&quot;samedi&quot;|dayname==&quot;dimanche&quot;,&quot;weekend&quot;,&quot;weekday&quot;)) %&gt;% select(steps,date,interval,isweekday)</code></pre>
-<p>2 - Panel plot of time series plot of the 5-minute interval and the average number of steps We first generate a new data frame <strong>mydf5</strong> with three variables: <em>steps</em> (mean of steps by interval), <em>interval</em> and <em>isweekday</em></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Panel plot of time series plot of the 5-minute interval and the average number of steps We first generate a new data frame <strong>mydf5</strong> with three variables: <em>steps</em> (mean of steps by interval), <em>interval</em> and <em>isweekday</em></li>
+</ol>
 <pre class="r"><code>  mydf5 &lt;- mydf4 %&gt;% group_by(interval,isweekday) %&gt;% summarize(steps=mean(steps)) %&gt;% select(steps,interval,isweekday)</code></pre>
 <p>As we will use <strong>ggplot2</strong> for this plot, we first need to load the package.</p>
 <pre class="r"><code> library(ggplot2)</code></pre>
